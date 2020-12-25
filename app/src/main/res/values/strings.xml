@@ -7,4 +7,5 @@
     <string name="playing">- Проигрывается -</string>
     <string name="paused">- Приостановлено -</string>
     <string name="next">next</string>
+    <string name="choose_file">choose file</string>
 </resources>

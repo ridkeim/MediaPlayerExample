@@ -1,6 +1,8 @@
 package ru.ridkeim.mediaplayerexample
 
+import android.content.Intent
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import ru.ridkeim.mediaplayerexample.databinding.ActivityMainBinding
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
+    private val requestAudioCode = 42
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var mediaPlayer : MediaPlayer
     private val resourcesUris by lazy {
@@ -22,7 +25,6 @@ class MainActivity : AppCompatActivity() {
             "https://sound-pack.net/download/Sound_11920_HeavyD.ogg"
         )
     }
-
     private val randomUriString : String
      get() {
          return resourcesUris[(resourcesUris.size * Math.random()).toInt()]
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
+        volumeControlStream = AudioManager.STREAM_MUSIC
         mediaPlayer = MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -71,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             return@setOnErrorListener true
         }
         nextRandomTrack()
-
         viewBinding.buttonPlay.setOnClickListener {
             if(playerState == PlayerState.STOPPED){
                 mediaPlayer.prepare()
@@ -102,14 +103,39 @@ class MainActivity : AppCompatActivity() {
         viewBinding.buttonNext.setOnClickListener {
             nextRandomTrack()
         }
+        viewBinding.chooseFile.setOnClickListener {
+            startActivityForResult(
+                Intent.createChooser(
+                    Intent(Intent.ACTION_GET_CONTENT).apply {
+                        type = "audio/*"
+                    }, "select audio"
+                ),requestAudioCode
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            requestAudioCode -> {
+                if(resultCode == RESULT_OK){
+                    val audioUri = data?.data ?: Uri.parse(randomUriString)
+                    loadNextTrack(audioUri)
+                }
+            }
+        }
     }
 
     private fun nextRandomTrack(){
+        val uri = Uri.parse(randomUriString)
+        loadNextTrack(uri)
+    }
+
+    private fun loadNextTrack(uri : Uri){
         viewBinding.buttonStop.isEnabled = false
         viewBinding.buttonPlay.isEnabled = false
         viewBinding.buttonPlay.setText(R.string.play)
         viewBinding.playerState.setText(R.string.press_play)
-        val uri = Uri.parse(randomUriString)
         mediaPlayer.reset()
         playerState = PlayerState.IDLE
         try {
