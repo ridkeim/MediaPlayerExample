@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 playerState = PlayerState.PREPARED
             }
             when(playerState){
-                PlayerState.PREPARED ->{
+                PlayerState.PREPARED, PlayerState.PAUSED->{
                     viewBinding.buttonPlay.setText(R.string.pause)
                     mediaPlayer.start()
                     playerState = PlayerState.STARTED
@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                     playerState = PlayerState.PAUSED
                     viewBinding.playerState.setText(R.string.paused)
                 }
+                else -> {}
             }
         }
         viewBinding.buttonStop.setOnClickListener {
