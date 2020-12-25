@@ -15,16 +15,14 @@ class MainActivity : AppCompatActivity() {
     private val requestAudioCode = 42
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var mediaPlayer : MediaPlayer
-    private val resourcesUris by lazy {
-        arrayOf(
-            "https://sound-pack.net/download/Sound_17453_SynthWah.ogg",
-            "https://sound-pack.net/download/Sound_17433_ShakerD.ogg",
-            "https://sound-pack.net/download/Sound_22719_Tambourine_130_BPM.ogg",
-            "https://ssound-pack.net/download/Sound_22721_Triangle_95_BPM.ogg",
-            "https://sound-pack.net/download/Sound_11942_CharismaRhythmGuitB.ogg",
-            "https://sound-pack.net/download/Sound_11920_HeavyD.ogg"
-        )
-    }
+    private val resourcesUris = arrayOf(
+        "https://sound-pack.net/download/Sound_17453_SynthWah.ogg",
+        "https://sound-pack.net/download/Sound_17433_ShakerD.ogg",
+        "https://sound-pack.net/download/Sound_22719_Tambourine_130_BPM.ogg",
+        "https://ssound-pack.net/download/Sound_22721_Triangle_95_BPM.ogg",
+        "https://sound-pack.net/download/Sound_11942_CharismaRhythmGuitB.ogg",
+        "https://sound-pack.net/download/Sound_11920_HeavyD.ogg"
+    )
     private val randomUriString : String
      get() {
          return resourcesUris[(resourcesUris.size * Math.random()).toInt()]
