@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MediaPlayerExample</string>
+    <string name="play">play</string>
+    <string name="pause">pause</string>
+    <string name="stop">stop</string>
+    <string name="press_play">Нажми Play</string>
+    <string name="playing">- Проигрывается -</string>
+    <string name="paused">- Приостановлено -</string>
+    <string name="next">next</string>
+</resources>
